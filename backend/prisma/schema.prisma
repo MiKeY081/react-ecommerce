@@ -1,0 +1,129 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  name     String?
+  email    String    @unique
+  password String
+  phone    BigInt?
+  image    String?
+  address  String?
+  role     String    @default("User")
+  dob      DateTime?
+  points   Float     @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Review Review[]
+
+  Product Product[]
+
+  order Order[]
+}
+
+model ParentCategory {
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
+  type       String?
+  categories Category[]
+}
+
+model Category {
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  type     String?
+  products Product[]
+
+  ParentCategory   ParentCategory? @relation(fields: [parentCategoryId], references: [id])
+  parentCategoryId String?         @db.ObjectId
+}
+
+model Product {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  slug        String?
+  description String
+  image       Image[]
+  price       Float
+  discount    Discount?
+  rating      Float?
+  ratingId    String[]  @db.ObjectId
+  size        String[]
+  owner       User?     @relation(fields: [userId], references: [id])
+  likedId     String[]  @db.ObjectId
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  order Order[]
+
+  review Review[]
+
+  Category   Category? @relation(fields: [categoryId], references: [id])
+  categoryId String?   @db.ObjectId
+  userId     String?   @db.ObjectId
+}
+
+type Discount {
+  discountpercent Float
+  startDate       DateTime  @default(now())
+  endDate         DateTime?
+}
+
+type Image {
+  color     String
+  colorCode String?
+  image     String[]
+}
+
+model Order {
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  order     OrderStatus @default(PENDING)
+  owner     String      @db.ObjectId
+  requester String?     @db.ObjectId
+  productId String?     @db.ObjectId
+
+  User    User?    @relation(fields: [requester], references: [id])
+  Product Product? @relation(fields: [productId], references: [id])
+  userId  String?  @db.ObjectId
+
+  sentAt    DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum OrderStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  DELIVERED
+}
+
+model Review {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  comment  String?
+  likeId   String[] @db.ObjectId
+  reviewer String[] @db.ObjectId
+  user     User     @relation(fields: [userId], references: [id])
+
+  writtenAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId    String   @db.ObjectId
+  Product   Product? @relation(fields: [productId], references: [id])
+  productId String?  @db.ObjectId
+}
+
+model Message {
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
+  name    String?
+  email   String
+  message String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
