@@ -3,7 +3,7 @@ import { RiUserFill } from "react-icons/ri"; // Example icon from react-icons li
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { handleSingleImageUpload } from "../assets/Functions/ImageHandler";
+import { handleSingleImageUpload } from "../../assets/Functions/ImageHandler";
 
 const ProfileForm = ({ user }) => {
   const [name, setName] = useState(user?.name || "");
