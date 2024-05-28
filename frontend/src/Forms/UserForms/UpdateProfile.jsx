@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
+import { UserContext } from "../../Context/UserContext";
 import ProfileForm from "./ProfileForm";
-import { UserContext } from "../Context/UserContext";
 
-const EditProfile = () => {
+const UpdateProfile = () => {
   const { user } = useContext(UserContext);
   return (
     user && (
@@ -13,4 +13,4 @@ const EditProfile = () => {
   );
 };
 
-export default EditProfile;
+export default UpdateProfile;

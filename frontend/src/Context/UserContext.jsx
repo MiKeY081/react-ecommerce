@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { createContext, useEffect } from "react";
-
-import { handleUserProfile } from "../Api/ApiReqest";
 import UserAPI from "../API/userAPI";
 
 export const UserContext = createContext();

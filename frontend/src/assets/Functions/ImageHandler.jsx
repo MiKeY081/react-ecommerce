@@ -4,8 +4,8 @@ import {
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
-import { app } from "../../config/firebase";
 import { toast } from "react-toastify";
+import app from "../../config/firebase";
 
 export const handleImageUpload = async (e, setIsLoading, setImages) => {
   setIsLoading(true);

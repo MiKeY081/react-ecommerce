@@ -1,16 +1,19 @@
 import React, { createContext, useEffect, useState } from "react";
-import { handleFetchAllProfiles } from "../Api/ApiReqest";
+import ProductAPI from "../API/ProductAPI";
 
 export const SearchContext = createContext();
 
 export const SearchContextProvider = ({ children }) => {
-  const [user, setUser] = useState();
+  const [products, setProducts] = useState();
   const [search, setSearch] = useState();
   useEffect(() => {
-    handleFetchAllProfiles(setUser);
+    const data = ProductAPI.getAllProducts();
+    setProducts(data.products);
   }, []);
   return (
-    <SearchContext.Provider value={{ user, setUser, search, setSearch }}>
+    <SearchContext.Provider
+      value={{ products, setProducts, search, setSearch }}
+    >
       {children}
     </SearchContext.Provider>
   );
